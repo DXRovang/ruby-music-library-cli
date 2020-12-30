@@ -19,9 +19,26 @@ class MusicLibraryController
       puts "What would you like to do?"
       user_input = gets.chomp
       
-      until user_input == "exit"
+      while user_input != "exit"
+        case user_input
+        when 'list songs'
+          list_songs
+        when 'list artists'
+          list_artists
+        when 'list genres'
+          list_genres
+        when 'list artist'
+          list_songs_by_artist
+        when 'list genre'
+          list_songs_by_genre
+        when 'play song'
+          play_song
+        end
         user_input = gets.chomp
-      end  
+      end
+
+
+    # end  
     end
 
     def list_songs
@@ -78,15 +95,13 @@ class MusicLibraryController
       puts "Which song number would you like to play?"
       input = gets.chomp
       index = input.to_i
-      # if index > 0 && index <= Song.all.length
-      #    new_index = index - 1
-      #    song = list_songs.find { |song| song[new_index] }
-      #   end
-      #   puts "Playing #{song.name} by #{song.artist.name}"
+      if index > 0 && index <= Song.all.length
+        new_index = index - 1
+        song = Song.all.sort! {|a,b| a.name <=> b.name}
+        #binding.pry
+        found_song = song[new_index]
+        puts "Playing #{found_song.name} by #{found_song.artist.name}"
+      end
     end
     
-end
-
-if Artist.find_by_name(user_input)
-  artist = Artist.find_by_name(user_input)
 end
