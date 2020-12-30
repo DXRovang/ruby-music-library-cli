@@ -55,7 +55,7 @@ class MusicLibraryController
     def list_songs_by_artist
       puts "Please enter the name of an artist:"
       user_input = gets.chomp
-      #if the user_input exists in the Artist class:  LOOK @ artist
+      #if the user_input exists in the Artist class: 
       if artist = Artist.find_by_name(user_input)
         #note that you can daisy chain loop methods
         artist.songs.sort! {|a,b| a.name <=> b.name }.each_with_index do |song, index|
@@ -85,4 +85,8 @@ class MusicLibraryController
       #   puts "Playing #{song.name} by #{song.artist.name}"
     end
     
+end
+
+if Artist.find_by_name(user_input)
+  artist = Artist.find_by_name(user_input)
 end
