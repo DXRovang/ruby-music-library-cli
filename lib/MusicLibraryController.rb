@@ -37,12 +37,18 @@ class MusicLibraryController
     end
   
     def list_artists
-      Song.all.sort! do |a,b|
-        a.artist.name <=> b.artist.name
+      Song.all.uniq do |song|
+        song.artist.name
+        binding.pry
       end
-      Song.all.each_with_index do |song, index|
-        puts "#{index + 1}. " + song.artist.name
-      end    
-    end
+
+
+    #   Song.all.sort! do |a,b|
+    #     a.artist.name <=> b.artist.name
+    #   end
+    #   Song.all.each_with_index do |song, index|
+    #     puts "#{index + 1}. " + song.artist.name
+    #   end    
+    # end
     
 end
