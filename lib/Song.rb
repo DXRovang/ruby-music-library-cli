@@ -10,8 +10,8 @@ class Song
 
   def initialize(name, artist=nil, genre=nil)
     @name = name
-    self.artist=(artist) if artist.class == Artist
-    self.genre=(genre) if genre.class == Genre
+    self.artist=(artist) #if artist.class == Artist
+    self.genre=(genre) #if genre.class == Genre
     #binding.pry
   end
 
@@ -77,22 +77,26 @@ class Song
 
 
   def self.new_from_filename(filename)
-    
+
     #separate the filename
-     artist = filename.split(" - ")[0]
+     artist_name = filename.split(" - ")[0]
      name = filename.split(" - ")[1]
-     genre = filename.split(" - ")[2].split(".")[0]
+     genre_name = filename.split(" - ")[2].split(".")[0]
+
+      artist1 = Artist.find_or_create_by_name(artist_name)
+      genre2 = Genre.find_or_create_by_name(genre_name)
 
     #create a new instance
-     song = Song.new(name, artist, genre)
-    
+     song = Song.new(name, artist1, genre2)  
     # #associate instance with artist
-     song.artist = artist
-    
+     song.artist = artist1
      song
-     binding.pry
   end
 
+  def self.create_from_filename(filename)
+    song = new_from_filename(filename)
+    song.save
+  end
 end
 
 #"Thundercat - For Love I Come - dance.mp3"
@@ -100,6 +104,16 @@ end
 
 
 
-  # def self.create_from_filename
 
-  # end
+
+
+
+    # parts = filename.split(" - ")
+    # artist_name, song_name, genre_name = parts[0], parts[1], parts[2].gsub(".mp3", "")
+
+    # artist = Artist.find_or_create_by_name(artist_name)
+    # genre = Genre.find_or_create_by_name(genre_name)
+
+    # new(song_name, artist, genre)
+
+    

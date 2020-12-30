@@ -17,21 +17,14 @@ class MusicImporter
     #binding.pry
   end
 
-  # def self.import 
-  #   import_file = self.files
-  #   import_file.each do |file|
-  #     Song.new_from_filename(file)
-  #   end
-  # end
-
-  
+  def import 
+    import_file = self.files
+    import_file.each do |file|
+      Song.create_from_filename(file)
+    end
+  end
 
 end
 
-# def import 
-#   import_file = self.files
-#   import_file.each do |file|
-#     Song.new_from_filename(file)
-#   end
-# end
+
 #FROM:   ruby-oo-object-relationships-collaborating-objects-lab
