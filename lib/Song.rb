@@ -1,14 +1,18 @@
+require "pry"
+require "./lib/concerns/findable.rb"
+
 class Song
+  extend Concerns::Findable
 
   attr_accessor :name, :genre, :artist
   
-
   @@all = []
 
   def initialize(name, artist=nil, genre=nil)
     @name = name
-    self.artist=(artist)
-    @genre = genre
+    self.artist=(artist) if artist.class == Artist
+    self.genre=(genre) if genre.class == Genre
+    #binding.pry
   end
 
   def self.all
@@ -16,7 +20,7 @@ class Song
   end
 
   def save
-    @@all << self
+    self.class.all << self
   end
 
   def self.destroy_all
@@ -29,34 +33,73 @@ class Song
     new_song
   end
 
-  #custom setter - adds artist & adds self to Artist class
+  #custom setter method
   def artist=(artist)
-    if artist != nil
+    if artist != nil 
+      #adds artist instance var 
       @artist = artist
+      #adds self to Artist class
       artist.add_song(self)
     else
       @artist = artist
     end
   end
 
-  #look at this later
   def genre=(genre)
-    @genre = genre
+    if genre != nil
+      @genre = genre
+      value = genre.songs.include?(self)
+      if value == false
+        genre.songs << self
+      end
+    else
+      @genre = nil
+    end
   end
 
-  def find_by_name
-
+  def self.find_by_name(name)
+    #iterate through Song
+    Song.all.find do |song| 
+      #return song instance with that name
+      song.name == name
+    end
   end
 
-  def find_or_create_by_name
-
+  def self.find_or_create_by_name(name)
+    #if find_by_name method is true, return it
+    if self.find_by_name(name)
+      self.find_by_name(name)
+    else
+      #else create a new Song instance
+      Song.create(name)
+    end
   end
 
-  def self.new_from_filename
 
+  def self.new_from_filename(filename)
+    
+    #separate the filename
+     artist = filename.split(" - ")[0]
+     name = filename.split(" - ")[1]
+     genre = filename.split(" - ")[2].split(".")[0]
+
+    #create a new instance
+     song = Song.new(name, artist, genre)
+    
+    # #associate instance with artist
+     song.artist = artist
+    
+     song
+     binding.pry
   end
 
-  def self.create_from_filename
-
-  end
 end
+
+#"Thundercat - For Love I Come - dance.mp3"
+
+
+
+
+  # def self.create_from_filename
+
+  # end

@@ -1,4 +1,8 @@
+require "pry"
+require "./lib/concerns/findable.rb"
+
 class Genre
+  extend Concerns::Findable
 
   attr_accessor :name, :songs, :artists
 
@@ -14,7 +18,7 @@ class Genre
   end
 
   def save
-    @@all << self
+    self.class.all << self
   end
 
   def self.destroy_all
@@ -27,13 +31,12 @@ class Genre
     new_genre
   end
 
-  #look at this later
+
   def artists
-    collection = []
-    self.songs.collect do |song|
-      collection << song.genre
-    end
-    collection.uniq
+    artist_return = songs.collect do |song|
+      song.artist
+      end.uniq
+      artist_return
   end
 
 
